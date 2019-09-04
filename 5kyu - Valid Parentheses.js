@@ -1,0 +1,32 @@
+/*
+        5kyu - Valid Parentheses
+        https://www.codewars.com/kata/valid-parentheses/train/javascript
+
+        Put '(' into the queue, remove
+        如果下一個唔係 ), 咁就+2, 都唔係 再加+2. 唔符合 = return false
+
+*/
+const { performance } = require('perf_hooks');
+
+function validParentheses(parens) {
+    let s = parens;
+    while (s.length) {
+        if (s[0] != '(' || s.length == 1) return false;
+        let ind = false;
+        for (let i = 1; i < s.length; i += 2) {
+            if (s[i] == ')') {
+                ind = i;
+                break;
+            }
+        }
+        if (!ind) return false;
+        s = s.slice(1, ind) + s.slice(ind + 1);
+    }
+    return true;
+}
+var t0 = performance.now();
+let res = validParentheses("(())()()()()()()((");
+var t1 = performance.now();
+
+console.log(res);
+console.log("It takes " + (t1 - t0).toFixed(3) + " milliseconds.");
