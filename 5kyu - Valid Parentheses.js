@@ -1,10 +1,6 @@
 /*
         5kyu - Valid Parentheses
         https://www.codewars.com/kata/valid-parentheses/train/javascript
-
-        Put '(' into the queue, remove
-        如果下一個唔係 ), 咁就+2, 都唔係 再加+2. 唔符合 = return false
-
 */
 const { performance } = require('perf_hooks');
 
