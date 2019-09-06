@@ -2,6 +2,7 @@
         4kyu - Decode the Morse code, advanced
         https://www.codewars.com/kata/decode-the-morse-code-advanced/train/javascript
 
+        -   2nd version, a better apporach
 */
 const { performance } = require('perf_hooks');
 
@@ -68,18 +69,12 @@ var decodeBits = function (bits) {
     // ToDo: Accept 0's and 1's, return dots, dashes and spaces
 
     // Trim starting & ending zeros
-    // bits = bits.replace(/^0+/, '').replace(/0+$/, '')
     bits = bits.replace(/^0+|0+$/g, '');
-
-    // Find out the transmission rate
-    let rate,
-        diffZeros = [...new Set(bits.match(/0+/g))].map(val => val.length),
-        diffOnes = [...new Set(bits.match(/1+/g))];
-
-    if (diffZeros.length == 0) return '.';
-    if (diffOnes.length == 1 && diffOnes[0].length != 1) {
-        rate = (diffZeros.length) ? Math.min(...diffZeros) : 1;
-    } else rate = Math.min(...diffOnes).toString().length;
+    /* 
+            Find out the transmission rate before we can translate those bits to Morse Code.
+            The idea is simple, get the minimum of consecutive 1 or 0.
+    */
+    let rate = Math.min.apply(null, [...new Set(bits.match(/1+|0+/g))].map(v => v.length));
 
     return bits.replace(new RegExp('111'.repeat(rate), "g"), '-')
         .replace(new RegExp('000'.repeat(rate), "g"), ' ')
