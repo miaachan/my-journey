@@ -2,7 +2,7 @@
         4kyu - Decode the Morse code, advanced
         https://www.codewars.com/kata/decode-the-morse-code-advanced/train/javascript
 
-        -   2nd version, a better apporach
+        -   3rd ver, a better approach with code rebuild.
 */
 const { performance } = require('perf_hooks');
 
@@ -66,14 +66,12 @@ const MORSE_CODE = {
 
 
 var decodeBits = function (bits) {
-    // ToDo: Accept 0's and 1's, return dots, dashes and spaces
-
-    // Trim starting & ending zeros
-    bits = bits.replace(/^0+|0+$/g, '');
     /* 
-            Find out the transmission rate before we can translate those bits to Morse Code.
+            Trim the starting & ending zeros first.
+            And find out the transmission rate before we can translate those bits to Morse Code.
             The idea is simple, get the minimum of consecutive 1 or 0.
     */
+    bits = bits.replace(/^0+|0+$/g, '');
     let rate = Math.min.apply(null, [...new Set(bits.match(/1+|0+/g))].map(v => v.length));
 
     return bits.replace(new RegExp('111'.repeat(rate), "g"), '-')
@@ -83,22 +81,16 @@ var decodeBits = function (bits) {
 }
 
 var decodeMorse = function (morseCode) {
-    // ToDo: Accept dots, dashes and spaces, return human-readable message
-    if (morseCode == '.') return MORSE_CODE['.'];
-
-    const diffSpaces = [...new Set(morseCode.match(/ +/g))];
-    // Split between words only when diffSpaces.length > 1
-    let wordsFlag = (diffSpaces.length > 1) ? true : false;
-    let words = (wordsFlag) ? morseCode.split('  ') : morseCode;
-
-    return (wordsFlag) ?
-        words.reduce((accu, cur) => {
-            let s = "";
-            cur.split(' ').forEach(v => s += MORSE_CODE[v]);
-            accu.push(s);
-            return accu;
-        }, []).join(' ')
-        : words.split(' ').map(val => MORSE_CODE[val]).join('');
+    /* 
+            Double split between words and character,
+            then perform the Morse Code conversion.
+    */
+    return morseCode.split('  ')
+        .map(val => val.split(' ')
+            .map(v => MORSE_CODE[v])
+            .join('')
+        )
+        .join(' ')
 }
 
 
