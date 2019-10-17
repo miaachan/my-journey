@@ -1,10 +1,13 @@
 /*
         5kyu - Valid Parentheses
         https://www.codewars.com/kata/valid-parentheses/train/javascript
+
+        v2 17 Oct,19: Rewrite using Regex
 */
 const { performance } = require('perf_hooks');
 
-function validParentheses(parens) {
+// v1: Old, stupid method
+function old_validParentheses(parens) {
     let s = parens;
     while (s.length) {
         if (s[0] != '(' || s.length == 1) return false;
@@ -20,8 +23,16 @@ function validParentheses(parens) {
     }
     return true;
 }
+
+// v2: Rewrite using regex
+function validParentheses(parens) {
+    let regex = /\(\)/g;
+    while (regex.test(parens)) parens = parens.replace(regex, '');
+    return parens === "";
+}
+
 var t0 = performance.now();
-let res = validParentheses("(())()()()()()()((");
+let res = validParentheses("()()(()())()()(())()()()()()(()())(()())");
 var t1 = performance.now();
 
 console.log(res);
