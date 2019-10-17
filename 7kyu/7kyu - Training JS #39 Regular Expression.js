@@ -3,7 +3,7 @@
         https://www.codewars.com/kata/training-js-number-39-regular-expression-star-plus-and-%7B%7D/train/javascript
 */
 
-let regex = /^-?9\d*(0){4,}$/
+let regex = /^-?9\d*0{4}$/
 
 /*
 regex.test("90000") , true);
