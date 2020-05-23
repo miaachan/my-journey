@@ -2,6 +2,8 @@
  * @param {number[]} nums
  * @return {number}
  */
+
+//  Should use object instead of Map() tho.
 var majorityElement = function (nums) {
     if (nums.length == 1) return nums[0];
     let map = new Map();
