@@ -3,34 +3,19 @@
  * @return {number[]}
  */
 
-// Maybe we can try a 2-pointer approach. (Sliding window?)
+//  Use Stack to do O(n)
 var dailyTemperatures = function (T) {
-    let ans = [];
-    let lptr = 0,
-        rptr = 1; // assume length > 1 first
-    while (lptr < T.length) {
-        // console.log(lptr, T[lptr], rptr, T[rptr]);
-        if (rptr >= T.length) ans.push(0);
+    let res = Array(T.length).fill(0);
+    let stack = [];
 
-        if (T[rptr] > T[lptr]) {
-            let flag = false;
-            for (let i = lptr + 1; i < rptr; ++i) {
-                if (T[i] > T[lptr]) {
-                    ans.push(i - lptr);
-                    flag = true;
-                    break;
-                }
-            }
-
-            if (!flag) ans.push(rptr - lptr);
-        } else if (rptr < T.length) {
-            ++rptr;
-            continue;
+    for (let i = 0; i < T.length; ++i) {
+        while (stack.length > 0 && T[i] > T[stack[stack.length - 1]]) {
+            let stackTop = stack.pop();
+            res[stackTop] = i - stackTop;
         }
-        ++lptr;
+        stack.push(i);
     }
-    return ans;
-    // console.log(ans);
+    return res;
 };
 
 //  Brute force solution
@@ -52,15 +37,4 @@ var dailyTemperaturesBF = function (T) {
 };
 
 // OUTPUT: [1, 1, 4, 2, 1, 1, 0, 0]
-
-const { performance } = require("perf_hooks");
-let t0, t1;
-t0 = performance.now();
 dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73]);
-t1 = performance.now();
-console.log("It takes " + (t1 - t0).toFixed(3) + " milliseconds.");
-t0 = performance.now();
-
-dailyTemperaturesBF([73, 74, 75, 71, 69, 72, 76, 73]);
-t1 = performance.now();
-console.log("It takes " + (t1 - t0).toFixed(3) + " milliseconds.");
