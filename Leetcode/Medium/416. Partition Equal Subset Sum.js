@@ -8,8 +8,9 @@ var canPartition = function (nums) {
     let target = sumNums / 2;
 
     // If we found target => The array can be partitioned
-    
+    let dp = Array.from(Array(nums.length), () => Array(sumNums).fill(false));
 
+    for (let i = 0; i < dp.length; ++i) {}
 };
 
 canPartition([1, 5, 11, 5]);
