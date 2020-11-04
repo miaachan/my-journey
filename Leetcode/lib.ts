@@ -1,3 +1,5 @@
+import { performance } from "perf_hooks";
+
 export class ListNode {
     val: number;
     next: ListNode | null;
@@ -19,4 +21,14 @@ export function ListNodeBuilder(nodes: number[]): ListNode {
         tail = tail.next;
     });
     return dHead.next;
+}
+
+export namespace Utils {
+    export function perfMeasure(fn: Function, ...params: any[]) {
+        let t0 = performance.now();
+        let result = fn(...params);
+        let t1 = performance.now();
+        console.log("Result: ", result);
+        console.log("It takes " + (t1 - t0).toFixed(3) + " milliseconds.");
+    }
 }
