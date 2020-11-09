@@ -1,4 +1,23 @@
+import { Utils } from "../lib";
+
 function countSubstrings(s: string): number {
+    let total = 0;
+    for (let i = 0; i < s.length; ++i) {
+        extend(i, i); // odd
+        extend(i, i + 1); // even
+    }
+    return total;
+
+    function extend(l: number, r: number): void {
+        while (l >= 0 && r < s.length && s[l] === s[r]) {
+            ++total;
+            --l;
+            ++r;
+        }
+    }
+}
+
+function _countSubstrings(s: string): number {
     let total = 0;
 
     for (let i = 0; i < s.length; ++i) {
@@ -22,4 +41,15 @@ function countSubstrings(s: string): number {
     return total;
 }
 
-countSubstrings("abacabb");
+Utils.perfMeasure(
+    countSubstrings,
+    "abacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4thabacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4thabacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4th"
+);
+Utils.perfMeasure(
+    countSubstrings,
+    "abacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4thabacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4thabacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4th"
+);
+Utils.perfMeasure(
+    countSubstrings,
+    "abacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4thabacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4thabacabbbbbbbbbaaaaaaaaaaaassssssssdfsdfsdfjkwehjkfhdfdfgfffdgdfgertjk3k4th"
+);
