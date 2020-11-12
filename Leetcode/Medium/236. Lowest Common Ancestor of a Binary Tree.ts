@@ -13,77 +13,75 @@
         ==> IF NOT BELONGS TO THE SAME BRANCH => RETURN ITS UPPER ANCESTOR
         ==> STORE EACH NODE'S ANCESTOR IN THE HASHMAP
 */
-
 function lowestCommonAncestor(
-    root: any | null,
-    p: any | null,
-    q: any | null
-): any | null {
-    // let commonAncestor: number[] = [];
-
+    root: TreeNode | null,
+    p: TreeNode | null,
+    q: TreeNode | null
+): TreeNode | null {
+    if (root === null) return null;
 
     let nodesAncestor = new Map();
     let pDepth = -1,
         qDepth = -1;
-    dfs(root, 0, root.val);
+    dfs(root, 0, root);
 
-    if (pDepth >= qDepth) {
-        let ancestor = nodesAncestor.get(p.val);
-        console.log(ancestor)
-
-        if(pDepth === qDepth ancestor === )
-        
+    if (pDepth === 0 || qDepth === 0) return root;
+    if (Math.abs(pDepth - qDepth) === 1) {
+        if (nodesAncestor.get(p?.val) === q) return q;
+        if (nodesAncestor.get(q?.val) === p) return p;
     }
 
+    let pPtr = p?.val;
+    let qPtr = q?.val;
+    let pAncestors: TreeNode[] = [];
+    let qAncestors: TreeNode[] = [];
 
+    while (pDepth > 0) {
+        pAncestors.push(nodesAncestor.get(pPtr));
+        pPtr = nodesAncestor.get(pPtr).val;
+        pDepth--;
+    }
 
-    console.log(pDepth, qDepth);
-    console.log(nodesAncestor);
+    while (qDepth > 0) {
+        qAncestors.push(nodesAncestor.get(qPtr));
+        qPtr = nodesAncestor.get(qPtr).val;
+        qDepth--;
+    }
+    p && pAncestors.push(p);
+    q && qAncestors.push(q);
 
-    function dfs(node, depth, ancestor: number) {
+    console.log(pAncestors);
+    console.log(qAncestors);
+
+    return pAncestors.length > qAncestors.length
+        ? pAncestors.reduceRight(
+              (bingo, cur, index) =>
+                  cur ===
+                  qAncestors[
+                      qAncestors.length - 1 - (index - pAncestors.length - 1)
+                  ]
+                      ? cur
+                      : bingo,
+              new TreeNode(0)
+          )
+        : qAncestors.reduceRight(
+              (bingo, cur, index) =>
+                  cur ===
+                  pAncestors[
+                      pAncestors.length - 1 - (index - pAncestors.length - 1)
+                  ]
+                      ? cur
+                      : bingo,
+              new TreeNode(0)
+          );
+
+    function dfs(node: TreeNode | null, depth: number, ancestor: TreeNode) {
         if (node === null) return;
-        if (node.val === p.val) pDepth = depth;
-        if (node.val === q.val) qDepth = depth;
+        if (node.val === p?.val) pDepth = depth;
+        if (node.val === q?.val) qDepth = depth;
         nodesAncestor.set(node.val, ancestor);
         if (pDepth !== -1 && qDepth !== -1) return;
-
-        dfs(node.left, depth + 1, node.val);
-        dfs(node.right, depth + 1, node.val);
+        dfs(node.left, depth + 1, node);
+        dfs(node.right, depth + 1, node);
     }
 }
-
-lowestCommonAncestor(
-    {
-        val: 3,
-        left: {
-            val: 5,
-            left: { val: 6, left: null, right: null },
-            right: {
-                val: 2,
-                left: { val: 7, left: null, right: null },
-                right: { val: 4, left: null, right: null },
-            },
-        },
-        right: {
-            val: 1,
-            left: { val: 0, left: null, right: null },
-            right: { val: 8, left: null, right: null },
-        },
-    },
-
-    {
-        val: 5,
-        left: { val: 6, left: null, right: null },
-        right: {
-            val: 2,
-            left: { val: 7, left: null, right: null },
-            right: { val: 4, left: null, right: null },
-        },
-    },
-
-    {
-        val: 1,
-        left: { val: 0, left: null, right: null },
-        right: { val: 8, left: null, right: null },
-    }
-);
