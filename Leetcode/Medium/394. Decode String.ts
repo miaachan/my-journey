@@ -7,18 +7,23 @@ function decodeString(s: string): string {
                 subStr = stack.pop() + subStr;
             }
             stack.pop(); //remove '['
-            let repeatTimes = parseInt(stack.pop()); //number of times
-            console.log(repeatTimes)
-            stack.push(subStr.repeat(repeatTimes));
-            console.log(stack, subStr)
+            let repeatTimes = stack.pop() ?? ""; //number of times
+            while (
+                stack[stack.length - 1]?.charCodeAt(0) >= 48 &&
+                stack[stack.length - 1]?.charCodeAt(0) <= 57
+            ) {
+                repeatTimes = stack?.pop() + repeatTimes;
+            }
+            stack.push(subStr.repeat(parseInt(repeatTimes)));
+            // console.log(stack)
             continue;
         }
 
         stack.push(s[i]);
     }
 
-    console.log(stack.join(''));
-    return stack.join('');
+    // console.log(stack.join(''));
+    return stack.join("");
 }
 
 // decodeString("3[a]2[bc]");
