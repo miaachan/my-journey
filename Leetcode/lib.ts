@@ -21,6 +21,15 @@ export class ListNode {
         });
         return dHead.next;
     }
+
+    static print(node: ListNode): void {
+        let str = "";
+        while (node) {
+            str += `${node.val} -> `;
+            node = node.next;
+        }
+        console.log(str + "NULL");
+    }
 }
 
 export class TreeNode {
