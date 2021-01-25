@@ -64,7 +64,8 @@ export class TreeNode {
     }
 }
 
-export class Heap<T> {
+// TODO: Too many things...
+export class Heap {
     private _heap = [];
 
     protected parent_indx = (n): number => Math.floor((n - 1) / 2);
