@@ -65,7 +65,7 @@ export class TreeNode {
 }
 
 // TODO: Too many things...
-export class Heap {
+export class MinHeap {
     private _heap = [];
 
     protected parent_indx = (n): number => Math.floor((n - 1) / 2);
@@ -82,7 +82,7 @@ export class Heap {
         let index = this._heap.length - 1;
         while (index > 0) {
             let parent_index = this.parent_indx(index);
-            if (this._heap[index] > this._heap[parent_index]) {
+            if (this._heap[index] < this._heap[parent_index]) {
                 this.swap(index, parent_index);
                 index = parent_index;
                 continue;
@@ -91,7 +91,7 @@ export class Heap {
         }
     }
 
-    // adjust element after popping the max value
+    // adjust element after popping the min value
     bubble_down() {
         let parent_index = 0;
         while (true) {
@@ -104,14 +104,14 @@ export class Heap {
 
             let to_be_swap = undefined;
 
-            // if there is any child that > parent; swap(child, parent)
-            // if both left & right are greater than parent, pick the greatest one.
-            // pick right if right > left; otherwise, pick left.
-            if (left_child && left_child > parent) to_be_swap = left_index;
-            if (right_child && right_child > parent && right_child > left_child)
+            // if there is any child that smaller than parent; swap(child, parent)
+            // if both left & right are smaller than parent, pick the smallest one.
+            // pick right if `right < left`; otherwise, pick left.
+            if (left_child && left_child < parent) to_be_swap = left_index;
+            if (right_child && right_child < parent && right_child < left_child)
                 to_be_swap = right_index;
 
-            // No children are greater than the parent, mission completed.
+            // No children are smaller than the parent, mission completed.
             if (!to_be_swap) break;
             this.swap(parent_index, to_be_swap);
             parent_index = to_be_swap;
